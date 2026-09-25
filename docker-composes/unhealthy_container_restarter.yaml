@@ -1,0 +1,28 @@
+services:
+  unhealthy_container_restarter:
+    image: docker:cli
+    container_name: unhealthy_container_restarter
+    hostname: unhealthy_container_restarter
+    network_mode: none
+    volumes: [ "/var/run/docker.sock:/var/run/docker.sock" ]
+    command:
+      - /bin/sh
+      - -c
+      - |
+        while true; do
+          sleep 600
+          # echo "$$(date '+%Y-%m-%d %H:%M:%S') - [INFO] A iniciar verificação..."
+          
+          containers=$$(docker ps -f health=unhealthy --format '{{.Names}}')
+          
+          if [ -n "$$containers" ]; then
+            echo "$$containers" | while read -r name; do
+              if [ -n "$$name" ]; then
+                echo "$$(date '+%Y-%m-%d %H:%M:%S') - [UNHEALTHY] Reiniciando contentor instável: $$name"
+                res=$$(docker restart "$$name")
+                echo "$$(date '+%Y-%m-%d %H:%M:%S') - $$res: iniciado"
+              fi
+            done
+          fi
+        done
+    restart: unless-stopped
