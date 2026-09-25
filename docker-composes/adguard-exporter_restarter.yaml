@@ -1,0 +1,24 @@
+services:
+  adguard-exporter_restarter:
+    image: docker:cli
+    container_name: adguard-exporter_restarter
+    hostname: adguard-exporter_restarter
+    network_mode: none
+    volumes: [ "/var/run/docker.sock:/var/run/docker.sock" ]
+    command:
+      - /bin/sh
+      - -c
+      - |
+        while true; do
+          sleep 30
+
+          errors=$$(docker logs --since 35s adguard-exporter 2>&1 | grep -Ec "unexpected status code 404|could not get status|could not get dhcp status")
+
+          if [ "$$errors" -ge 2 ]; then
+            echo "$$(date '+%Y-%m-%d %H:%M:%S') - [ERROR] Detetados $$errors erros no adguard-exporter"
+            echo "$$(date '+%Y-%m-%d %H:%M:%S') - [RESTART] A reiniciar adguard-exporter..."
+            docker restart adguard-exporter
+            sleep 60
+          fi
+        done
+    restart: unless-stopped
