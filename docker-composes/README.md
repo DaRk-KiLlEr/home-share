@@ -1,10 +1,13 @@
 # Docker Auto-Restarters & Exporter Watchdogs 🐳🔄
 
-Esta pasta contém configurações de Docker Compose focadas na resiliência do ecossistema do Homelab, garantindo que os contentores e exportadores de métricas críticas reiniciam automaticamente em caso de quebra ou falha.
+Esta pasta contém configurações de Docker Compose focadas na resiliência do ecossistema do Homelab, garantindo que os contentores e exportadores de métricas críticas reiniciam ou atualizam automaticamente em caso de quebra ou falha.
 
 ## 🚀 Restarters de Sistema Geral
 * **exited_container_restarter.yaml**: Monitoriza o socket do Docker e força o reinício imediato de qualquer contentor que pare inesperadamente (estado *Exited*).
 * **unhealthy_container_restarter.yaml**: Monitoriza os *Healthchecks* do Docker. Se um contentor ficar bloqueado ou perder conectividade (estado *Unhealthy*), força um reinício limpo do serviço.
+
+## 📦 Atualizações Automáticas (Updates)
+* **nickfedor.watchtower.yaml**: Monitoriza e atualiza automaticamente os seus contentores Docker para as versões mais recentes das imagens sempre que são lançadas no Docker Hub.
 
 ## 📊 Watchdogs de Exporters (Monitorização)
 * **adguard-exporter_restarter.yaml**: Garante a disponibilidade do exportador de métricas do AdGuard Home.
