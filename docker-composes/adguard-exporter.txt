@@ -8,12 +8,12 @@ Prometheus ou outro sistema de monitorização compatível.
 Dashboard Grafana
 -----------------
 Para visualizar as métricas, importa a dashboard Grafana **24520 — AdGuard
-Home Multi-Instance Monitoring**:
-https://grafana.com/grafana/dashboards/24520-adguard-home-multi-instance-monitoring/
+Home Multi-Instance Monitoring (Prometheus Exporter)**:
+https://grafana.com/grafana/dashboards/24520-adguard-home-multi-instance-monitoring-prometheus-exporter/
 
-A dashboard destina-se a monitorizar várias instâncias AdGuard Home. Depois
-de a importares, seleciona a fonte de dados Prometheus que recolhe as métricas
-deste exporter.
+A dashboard foi criada para este exporter e suporta várias instâncias
+AdGuard Home. Depois de a importares, seleciona a fonte de dados Prometheus
+que recolhe as métricas deste exporter.
 
 Ficheiros
 ---------
