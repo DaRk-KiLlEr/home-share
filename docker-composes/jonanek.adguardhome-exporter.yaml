@@ -13,3 +13,9 @@ services:
       ADGUARD_URL_1: "http://192.168.100.170:5353"
       ADGUARD_URL_2: "http://192.168.100.171:5353"
       ADGUARD_URL_3: "http://192.168.100.174:5353"
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        tr -d '\r' < /entrypoint.sh > /tmp/entrypoint.sh
+        exec /bin/sh /tmp/entrypoint.sh node dist/index.js
