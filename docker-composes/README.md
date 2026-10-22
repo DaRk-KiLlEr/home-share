@@ -9,7 +9,10 @@ Esta pasta contém configurações de Docker Compose focadas na resiliência do 
 ## 📦 Atualizações Automáticas (Updates)
 * **nickfedor.watchtower.yaml**: Monitoriza e atualiza automaticamente os seus contentores Docker para as versões mais recentes das imagens sempre que são lançadas no Docker Hub.
 
-## 📊 Watchdogs de Exporters (Monitorização)
+## 📊 Exporters (Monitorização)
+* **adguard-exporter.yaml**: Exporta métricas de três instâncias AdGuard Home na porta 9617 para recolha pelo Prometheus. Consulta **[adguard-exporter.txt](./adguard-exporter.txt)** para os passos de configuração e a dashboard Grafana recomendada.
+
+## 🔄 Watchdogs de Exporters (Monitorização)
 * **adguard-exporter_restarter.yaml**: Garante a disponibilidade do exportador de métricas do AdGuard Home.
 * **nut-exporter_restarter.yaml**: Monitoriza o exportador do Network UPS Tools (NUT), crítico para garantir que os dados da UPS/Bateria não falham na recolha.
 * **redis-unbound-exporter_restarter.yaml**: Assegura a estabilidade dos exportadores do Redis e do servidor DNS Unbound.
