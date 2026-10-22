@@ -1,0 +1,92 @@
+AdGuard Home Exporter — Instruções
+====================================
+
+Este Compose executa o jonanek/adguardhome-exporter e recolhe métricas de
+três instâncias AdGuard Home, disponibilizando-as na porta 9617 para o
+Prometheus ou outro sistema de monitorização compatível.
+
+Dashboard Grafana
+-----------------
+Para visualizar as métricas, importa a dashboard Grafana **24520 — AdGuard
+Home Multi-Instance Monitoring (Prometheus Exporter)**:
+https://grafana.com/grafana/dashboards/24520-adguard-home-multi-instance-monitoring-prometheus-exporter/
+
+A dashboard suporta várias instâncias AdGuard Home. Depois de a importares,
+seleciona a fonte de dados Prometheus que recolhe as métricas deste exporter.
+
+1. Confirmar os endereços
+-------------------------
+A configuração usa estas instâncias AdGuard Home:
+
+- http://192.168.100.170:5353
+- http://192.168.100.171:5353
+- http://192.168.100.174:5353
+
+Confirma que o host Docker consegue aceder a estes endereços e que a porta
+5353 corresponde à interface web/API de cada instância.
+
+2. Configurar as credenciais
+----------------------------
+O Compose usa variáveis de ambiente para não guardar palavras-passe no YAML.
+Define as seguintes variáveis num ficheiro .env, na mesma pasta do Compose:
+
+ADGUARD_USERNAME_1=utilizador_da_instancia_1
+ADGUARD_PASSWORD_1=palavra_passe_da_instancia_1
+ADGUARD_USERNAME_2=utilizador_da_instancia_2
+ADGUARD_PASSWORD_2=palavra_passe_da_instancia_2
+ADGUARD_USERNAME_3=utilizador_da_instancia_3
+ADGUARD_PASSWORD_3=palavra_passe_da_instancia_3
+
+Substitui os valores pelos dados reais de cada instância. Não publiques o
+ficheiro .env nem palavras-passe reais num repositório público.
+
+3. Corrigir o entrypoint com CRLF
+---------------------------------
+A imagem pode ter finais de linha Windows (CRLF) no ficheiro /entrypoint.sh,
+o que pode impedir o arranque correto do contentor.
+
+Depois de descarregar a imagem, cria uma cópia com finais de linha Unix.
+Executa:
+
+docker pull jonanek/adguardhome-exporter:latest
+mkdir -p /appdata/adguard_home-exporter-new
+docker run --rm --entrypoint /bin/sh jonanek/adguardhome-exporter:latest -c 'tr -d "\r" < /entrypoint.sh' > /appdata/adguard_home-exporter-new/entrypoint.sh
+chmod 755 /appdata/adguard_home-exporter-new/entrypoint.sh
+
+O caminho do ficheiro criado tem de corresponder ao volume montado em
+adguard-exporter.yaml: /appdata/adguard_home-exporter-new/entrypoint.sh.
+
+4. Iniciar o Compose
+--------------------
+Guarda adguard-exporter.yaml e .env na mesma pasta. Depois executa:
+
+docker compose -f adguard-exporter.yaml up -d
+
+5. Verificar o funcionamento
+----------------------------
+Verifica se o contentor está a correr:
+
+docker ps --filter name=adguard-exporter
+
+Consulta os logs:
+
+docker logs --tail 100 adguard-exporter
+
+As métricas devem estar disponíveis em:
+
+http://IP_DO_HOST_DOCKER:9617/metrics
+
+Substitui IP_DO_HOST_DOCKER pelo endereço IP do host onde corre o exporter.
+No Prometheus, configura um scrape target para esse endereço e porta e
+confirma que o target fica UP.
+
+6. Atualizar ou parar
+---------------------
+Para atualizar a imagem e recriar o contentor:
+
+docker compose -f adguard-exporter.yaml pull
+docker compose -f adguard-exporter.yaml up -d
+
+Para parar e remover o contentor:
+
+docker compose -f adguard-exporter.yaml down
