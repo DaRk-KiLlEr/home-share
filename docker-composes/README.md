@@ -11,6 +11,7 @@ Esta pasta contém configurações de Docker Compose focadas na resiliência do 
 
 ## 📊 Watchdogs de Exporters (Monitorização)
 * **adguard-exporter_restarter.yaml**: Garante a disponibilidade do exportador de métricas do AdGuard Home.
+* **jonanek.adguardhome-exporter.yaml**: Exporta métricas de três instâncias do AdGuard Home para Prometheus (porta 9617). Inclui um contorno para o `docker-entrypoint.sh` com finais de linha CRLF da imagem e usa um ficheiro `.env` local para credenciais.
 * **nut-exporter_restarter.yaml**: Monitoriza o exportador do Network UPS Tools (NUT), crítico para garantir que os dados da UPS/Bateria não falham na recolha.
 * **redis-unbound-exporter_restarter.yaml**: Assegura a estabilidade dos exportadores do Redis e do servidor DNS Unbound.
 
