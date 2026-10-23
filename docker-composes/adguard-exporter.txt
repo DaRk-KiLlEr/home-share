@@ -90,3 +90,16 @@ docker compose -f adguard-exporter.yaml up -d
 Para parar e remover o contentor:
 
 docker compose -f adguard-exporter.yaml down
+
+Dashboard Grafana personalizada
+-------------------------------
+O ficheiro [adguard-home-dashboard.json](./adguard-home-dashboard.json) contém a dashboard "AdGuard Home Monitoring" exportada da configuração personalizada, incluindo os painéis, consultas, variáveis e disposição atuais.
+
+Importação:
+1. No Grafana, abre Dashboards e escolhe Import.
+2. Carrega o ficheiro adguard-home-dashboard.json.
+3. Seleciona a fonte de dados Prometheus correspondente ao exporter.
+4. Confirma a variável Job (por omissão, adguard_home-exporter-new) e as instâncias AdGuard detetadas.
+5. Conclui a importação e verifica os painéis.
+
+A exportação conserva os endereços das três instâncias deste homelab (192.168.100.170, .171 e .174, porta 5353). Ao importar noutro ambiente, adapta as instâncias e seleciona a datasource Prometheus correta. O UID da datasource exportada pode não existir noutro Grafana, por isso confirma a seleção durante a importação.
