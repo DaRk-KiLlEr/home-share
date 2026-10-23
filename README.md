@@ -1,9 +1,9 @@
 # Home-Share 🏠
 
-Repositório de scripts úteis para Homelab e automação residencial.
+Repositório de scripts e configurações úteis para homelab e automação.
 
-## 📁 Estrutura do Repositório:
+## 📁 Estrutura do Repositório
 
-* **[docker-composes](./docker-composes)**: Configurações e arquiteturas avançadas de Docker Compose multi-contentor.
-* **[pve proxmox backup script](./pve%20proxmox%20backup%20script)**: Scripts dedicados a cópias de segurança (backups) no Proxmox VE.
-* **[ssh-dashboard](./ssh-dashboard)**: Scripts para instalação de painéis de monitorização (dashboards) via SSH (suporta PC x86, ARM64 e OpenMediaVault).
+* **[docker-composes](./docker-composes)**: Ficheiros Docker Compose, exportadores, restarters e dashboards de monitorização.
+* **[Scripts de backup Proxmox](./pve%20proxmox%20backup%20script)**: Scripts para cópias de segurança no Proxmox VE.
+* **[ssh-dashboard](./ssh-dashboard)**: Scripts para instalar dashboards de monitorização via SSH em sistemas x86, ARM64 e OpenMediaVault.
