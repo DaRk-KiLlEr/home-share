@@ -3,6 +3,7 @@ services:
     image: docker:cli
     container_name: unhealthy_container_restarter
     hostname: unhealthy_container_restarter
+    entrypoint: []
     network_mode: none
     volumes: [ "/var/run/docker.sock:/var/run/docker.sock" ]
     command:
@@ -12,9 +13,9 @@ services:
         while true; do
           sleep 600
           # echo "$$(date '+%Y-%m-%d %H:%M:%S') - [INFO] A iniciar verificação..."
-          
+
           containers=$$(docker ps -f health=unhealthy --format '{{.Names}}')
-          
+
           if [ -n "$$containers" ]; then
             echo "$$containers" | while read -r name; do
               if [ -n "$$name" ]; then
