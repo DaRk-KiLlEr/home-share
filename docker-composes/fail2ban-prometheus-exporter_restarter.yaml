@@ -1,0 +1,25 @@
+services:
+  fail2ban-prometheus-exporter_restart:
+    image: docker:cli
+    container_name: fail2ban-prometheus-exporter_restart
+    hostname: fail2ban-prometheus-exporter_restart
+    entrypoint: []
+    network_mode: none
+    volumes: [ "/var/run/docker.sock:/var/run/docker.sock" ]
+    command:
+      - /bin/sh
+      - -c
+      - |
+        while true; do
+          sleep 30
+
+          errors=$$(docker logs --since 35s fail2ban-prometheus-exporter 2>&1 | grep -Ec "no such file or directory|connection refused")
+
+          if [ "$$errors" -ge 1 ]; then
+            echo "$$(date '+%Y-%m-%d %H:%M:%S') - [ERROR] Detetados $$errors erros no fail2ban-prometheus-exporter"
+            echo "$$(date '+%Y-%m-%d %H:%M:%S') - [RESTART] A reiniciar fail2ban-prometheus-exporter..."
+            docker restart fail2ban-prometheus-exporter
+            sleep 60
+          fi
+        done
+    restart: unless-stopped
