@@ -1,0 +1,46 @@
+Fail2ban Prometheus Exporter — Watchdog
+========================================
+
+Este Compose cria um watchdog para o contentor fail2ban-prometheus-exporter.
+A cada 30 segundos, consulta os logs dos últimos 35 segundos e procura estas
+mensagens:
+
+- no such file or directory
+- connection refused
+
+Se encontrar pelo menos uma linha correspondente, regista o erro e reinicia
+o contentor fail2ban-prometheus-exporter. Depois aguarda 60 segundos antes
+de retomar o ciclo.
+
+Ficheiros
+---------
+- fail2ban-prometheus-exporter_restarter.yaml: watchdog Docker Compose.
+- README.md: índice dos Compose e descrição da sua função.
+
+Pré-requisitos
+--------------
+- O contentor alvo tem de se chamar exatamente fail2ban-prometheus-exporter.
+- O Docker socket /var/run/docker.sock tem de existir no host.
+- O watchdog necessita de acesso ao socket para consultar logs e reiniciar
+  o contentor.
+- A imagem docker:cli é usada apenas como cliente Docker; entrypoint: []
+  limpa o ENTRYPOINT predefinido da imagem para permitir executar /bin/sh.
+
+Iniciar
+-------
+docker compose -f fail2ban-prometheus-exporter_restarter.yaml up -d
+
+Verificar o watchdog
+--------------------
+docker ps --filter name=fail2ban-prometheus-exporter_restart
+docker logs --tail 100 fail2ban-prometheus-exporter_restart
+
+Limitações
+----------
+O watchdog depende das mensagens encontradas nos logs. Não deteta todas as
+falhas possíveis: se o exporter ficar bloqueado ou deixar de responder sem
+escrever uma das mensagens acima, não será reiniciado por este script.
+
+A janela de 35 segundos sobrepõe-se ao intervalo de 30 segundos, pelo que
+uma mensagem pode ser contada em duas verificações. Isso não provoca mais
+do que um restart em cada verificação.
