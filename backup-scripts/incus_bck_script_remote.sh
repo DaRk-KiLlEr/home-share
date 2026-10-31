@@ -16,7 +16,7 @@ BACKUP_PASS="password"
 SSH_PORT=22
 
 # Destino dos backups no servidor Incus
-BACKUP_DIR="/srv/dev-disk-by-uuid-855d825e-344a-47f8-8886-98c4db45f990/proxmox_backup/darkpi_incus"
+BACKUP_DIR="/dir_para_os_backups/"
 
 KEEP_LXC=4
 
