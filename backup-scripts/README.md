@@ -1,20 +1,16 @@
 # Scripts de backup — Proxmox VE e Incus
 
-Esta pasta contém scripts Bash para automatizar cópias de segurança no Proxmox VE e no Incus.
+Esta pasta contém scripts Bash para executar cópias de segurança no Proxmox VE e no Incus.
 
 ## Scripts disponíveis
 
 - **[pve_bck_script.sh](./pve_bck_script.sh)** — recolhe backups do Proxmox VE através de SSH e aplica retenção por tipo e ID.
 - **[incus_bck_script.sh](./incus_bck_script.sh)** — exporta instâncias Incus, incluindo os respetivos snapshots, aplica retenção por instância e envia um resumo por email.
+- **[incus_bck_script_remote.sh](./incus_bck_script_remote.sh)** — executa a partir de outra máquina, liga-se ao servidor Incus por SSH e guarda os exports no próprio servidor Incus.
 
-## Incus — utilização
+## Incus — script local
 
-O script Incus foi preparado para o ambiente DARKPI. Antes de o utilizares noutro sistema, confirma e adapta as variáveis na secção **CONFIGURAÇÃO**:
-
-- `MOUNT_POINT`: ponto de montagem do disco de backup.
-- `BACKUP_DIR`: pasta de destino.
-- `KEEP_LXC`: número de backups a manter por instância.
-- `EMAIL_TO`: destinatário local para as notificações.
+Antes de utilizar o script local noutro sistema, confirma e adapta as variáveis na secção CONFIGURAÇÃO, incluindo destino, retenção e destinatário das notificações.
 
 Executar manualmente:
 
@@ -23,26 +19,43 @@ chmod +x incus_bck_script.sh
 ./incus_bck_script.sh
 ```
 
-O script verifica se o disco está montado e se o Incus está acessível, exporta cada instância e os seus snapshots, remove os backups mais antigos acima do limite configurado e termina com um resumo. O código de saída é `0` quando a execução termina sem erros e diferente de zero quando há erros.
+O script exporta cada instância e os respetivos snapshots, aplica a retenção configurada e termina com um resumo. O código de saída é 0 quando termina sem erros e diferente de zero quando há erros.
 
-### Agendamento semanal
+### Envio de email no script local
 
-Exemplo para executar aos domingos às 03:00:
+O envio utiliza o comando local /usr/sbin/sendmail, normalmente disponibilizado pelo sistema de email instalado no host. Por omissão, EMAIL_TO="root": a mensagem é entregue ao destinatário local root. Configura o encaminhamento de email no sistema para que as mensagens cheguem à caixa pretendida.
 
-```cron
-0 3 * * 0 /caminho/para/incus_bck_script.sh >> /var/log/incus-backup.log 2>&1
+O script não configura SMTP externo nem guarda credenciais SMTP. Para funcionar, /usr/sbin/sendmail tem de existir e o serviço de email do sistema tem de estar configurado.
+
+## Incus — script remoto
+
+O script remoto é executado na máquina que inicia o backup. Liga-se ao servidor Incus por SSH, executa os exports no servidor e guarda os ficheiros no caminho definido em BACKUP_DIR.
+
+Antes da primeira execução, adapta estas variáveis na secção CONFIGURAÇÃO:
+
+- BACKUP_HOST: hostname ou endereço IP do servidor Incus.
+- BACKUP_USER e BACKUP_PASS: utilizador e palavra-passe SSH.
+- SSH_PORT: porta SSH do servidor.
+- BACKUP_DIR: diretório de destino no servidor Incus.
+- KEEP_LXC: número de backups a manter por instância.
+
+Requisitos na máquina que executa o script: Bash, ssh e sshpass. No servidor remoto: SSH funcional, Incus acessível pelo utilizador configurado e disco de destino montado.
+
+Executar manualmente:
+
+```bash
+chmod +x incus_bck_script_remote.sh
+./incus_bck_script_remote.sh
 ```
 
-Substitui o caminho pelo local onde guardaste o script.
+O script verifica a ligação SSH, o acesso ao Incus e se o destino pertence a um sistema de ficheiros montado diferente da raiz. Exporta cada instância com os respetivos snapshots, mantém os backups mais recentes por instância de acordo com KEEP_LXC e apresenta um resumo no final.
 
-### Envio de email no Incus
+O script não depende de um agendador específico. Pode ser executado manualmente ou integrado no mecanismo de agendamento que preferires.
 
-O script não configura nem envia email diretamente para um servidor SMTP externo. Usa o comando local `/usr/sbin/sendmail`, normalmente disponibilizado pelo sistema de email instalado no host.
+## Proxmox VE
 
-Por omissão, `EMAIL_TO="root"`: a mensagem é entregue ao destinatário local `root`. No OpenMediaVault, configura o encaminhamento/notificações de email para que as mensagens destinadas a `root` cheguem à caixa de correio pretendida. Assim, o script reutiliza a configuração de email existente no OMV e não guarda credenciais SMTP.
-
-São enviados emails com o resumo da execução e com o registo recolhido pelo script. Os assuntos distinguem sucesso, erros e ausência de instâncias. Para funcionar, `/usr/sbin/sendmail` tem de existir e o serviço de email do sistema tem de estar configurado.
+Consulta os comentários e a secção de configuração de pve_bck_script.sh antes de o executar. Confirma os caminhos, os acessos SSH e as políticas de retenção adequadas ao teu ambiente.
 
 ## Nota
 
-Os caminhos, os destinatários, a retenção e os parâmetros dos scripts são específicos do ambiente onde foram preparados. Revê a configuração antes de executar em produção.
+Os caminhos, credenciais, destinatários, parâmetros e políticas de retenção são específicos do ambiente onde os scripts foram preparados. Revê a configuração antes de executar em produção.
