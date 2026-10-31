@@ -147,9 +147,9 @@ while IFS= read -r INSTANCE; do
     TEMP_FILE="$BACKUP_DIR/.${BACKUP_FILE}.tmp"
     FINAL_FILE="$BACKUP_DIR/$BACKUP_FILE"
 
-    log "A exportar instância e snapshots (Gzip)..."
+    log "A exportar apenas a instância, sem snapshots (Gzip)..."
 
-    if ssh_source "incus export '$INSTANCE' '$TEMP_FILE'"; then
+    if ssh_source "incus export '$INSTANCE' '$TEMP_FILE' --instance-only"; then
         if ssh_source "test -s '$TEMP_FILE' && mv '$TEMP_FILE' '$FINAL_FILE'"; then
             COPIED=$((COPIED + 1))
             log "Backup concluído: $BACKUP_FILE"
