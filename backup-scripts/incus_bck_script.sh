@@ -10,8 +10,7 @@ set -u
 # CONFIGURAÇÃO
 # ------------------------------------------------------------
 
-MOUNT_POINT="/srv/dev-disk-by-uuid-855d825e-344a-47f8-8886-98c4db45f990"
-BACKUP_DIR="$MOUNT_POINT/proxmox_backup/darkpi_incus"
+BACKUP_DIR="/srv/dev-disk-by-uuid-855d825e-344a-47f8-8886-98c4db45f990/proxmox_backup/darkpi_incus"
 KEEP_LXC=4
 
 # Envia para root; o sistema de email do OMV encaminha para a
@@ -102,11 +101,13 @@ echo
 
 log "A verificar se o HDD está montado..."
 
-if ! mountpoint -q "$MOUNT_POINT"; then
-    abort_backup "O disco de backup não está montado em $MOUNT_POINT"
+MOUNT_TARGET=$(findmnt -T "$BACKUP_DIR" -n -o TARGET) || abort_backup "Não foi possível identificar o sistema de ficheiros do destino"
+
+if [ "$MOUNT_TARGET" = "/" ]; then
+    abort_backup "O destino está no sistema de ficheiros raiz; backup cancelado"
 fi
 
-log "HDD montado"
+log "Disco de backup montado em: $MOUNT_TARGET"
 
 log "A verificar o Incus..."
 
@@ -118,7 +119,7 @@ log "Incus acessível"
 
 log "A verificar o espaço disponível..."
 
-if ! df -h "$MOUNT_POINT"; then
+if ! df -h "$BACKUP_DIR"; then
     abort_backup "Não foi possível verificar o espaço disponível no destino"
 fi
 
