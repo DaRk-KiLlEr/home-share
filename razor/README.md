@@ -9,9 +9,10 @@ Esta pasta contém efeitos de iluminação personalizados para periféricos Raze
 | [FireOrnataChromav3.json](./FireOrnataChromav3.json) | Razer Ornata Chroma | Fogo clássico | 22 × 6 | 15 | 10 FPS |
 | [FireOrnataChromav4.json](./FireOrnataChromav4.json) | Razer Ornata Chroma | Fogo com maior presença de vermelho e tons quentes | 22 × 6 | 15 | 15 FPS |
 | [FireOrnataChromav5.json](./FireOrnataChromav5.json) | Razer Ornata Chroma | Fogo dominado por vermelho e carmesim | 22 × 6 | 15 | 15 FPS |
+| [FireOrnataChromav6.json](./FireOrnataChromav6.json) | Razer Ornata Chroma | Fogo irregular e turbulento, com cintilação independente | 22 × 6 | 15 | 15 FPS |
 | [FireBasiliskV3.json](./FireBasiliskV3.json) | Razer Basilisk V3 | Fogo clássico | 11 × 1 | 15 | 10 FPS |
 
-Todos os efeitos usam 15 frames e repetição contínua. As versões v3, v4 e v5 do Ornata Chroma são estilos independentes e podem coexistir na lista de efeitos personalizados.
+Todos os efeitos usam 15 frames e repetição contínua. As versões v3, v4, v5 e v6 do Ornata Chroma são estilos independentes e podem coexistir na lista de efeitos personalizados.
 
 ## Instalação
 
