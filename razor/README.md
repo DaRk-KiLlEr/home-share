@@ -6,13 +6,13 @@ Esta pasta contém efeitos de iluminação personalizados para periféricos Raze
 
 | Ficheiro | Dispositivo | Estilo | Matriz | Frames | Velocidade |
 |---|---|---|---:|---:|---:|
-| [FireOrnataChromav3.json](./FireOrnataChromav3.json) | Razer Ornata Chroma | Fogo clássico | 22 × 6 | 15 | 10 FPS |
-| [FireOrnataChromav4.json](./FireOrnataChromav4.json) | Razer Ornata Chroma | Fogo com maior presença de vermelho e tons quentes | 22 × 6 | 15 | 15 FPS |
-| [FireOrnataChromav5.json](./FireOrnataChromav5.json) | Razer Ornata Chroma | Fogo dominado por vermelho e carmesim | 22 × 6 | 15 | 15 FPS |
-| [FireOrnataChromav6.json](./FireOrnataChromav6.json) | Razer Ornata Chroma | Fogo irregular e turbulento, com cintilação independente | 22 × 6 | 15 | 15 FPS |
-| [FireBasiliskV3.json](./FireBasiliskV3.json) | Razer Basilisk V3 | Fogo clássico | 11 × 1 | 15 | 10 FPS |
+| [FireOrnataChromav3.json](./FireOrnataChromav3.json) | Razer Ornata Chroma | Fogo clássico | 22 × 6 | 30 | 15 FPS |
+| [FireOrnataChromav4.json](./FireOrnataChromav4.json) | Razer Ornata Chroma | Fogo com maior presença de vermelho e tons quentes | 22 × 6 | 30 | 15 FPS |
+| [FireOrnataChromav5.json](./FireOrnataChromav5.json) | Razer Ornata Chroma | Fogo dominado por vermelho e carmesim | 22 × 6 | 30 | 15 FPS |
+| [FireOrnataChromav6.json](./FireOrnataChromav6.json) | Razer Ornata Chroma | Fogo irregular e turbulento, com cintilação independente | 22 × 6 | 30 | 20 FPS |
+| [FireBasiliskV3.json](./FireBasiliskV3.json) | Razer Basilisk V3 | Fogo clássico | 11 × 1 | 30 | 15 FPS |
 
-Todos os efeitos usam 15 frames e repetição contínua. As versões v3, v4, v5 e v6 do Ornata Chroma são estilos independentes e podem coexistir na lista de efeitos personalizados.
+Todos os efeitos usam 30 frames e repetição contínua. As versões v3, v4, v5 e v6 do Ornata Chroma são estilos independentes e podem coexistir na lista de efeitos personalizados.
 
 ## Instalação
 
@@ -33,7 +33,7 @@ Todos os efeitos usam 15 frames e repetição contínua. As versões v3, v4, v5 
 - Efeitos preparados com a estrutura de sequência JSON utilizada pelo Polychromatic 0.9.8.
 - A matriz de cada ficheiro corresponde ao mapeamento do respetivo dispositivo nessa versão do Polychromatic.
 - A reprodução depende do suporte do dispositivo e do serviço OpenRazer instalado no sistema.
-- Todos os ficheiros incluem 15 frames e repetição contínua (`loop: true`); a velocidade de reprodução é indicada na tabela.
+- Todos os ficheiros incluem 30 frames e repetição contínua (`loop: true`); a velocidade de reprodução é indicada na tabela.
 
 ## Notas
 
